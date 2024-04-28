@@ -520,31 +520,3 @@ def create_image_display(compare_list,Low_ass_location):
             
 
             
-            
-            
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
