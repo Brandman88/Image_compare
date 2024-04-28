@@ -273,6 +273,8 @@ def create_image_display(compare_list,Low_ass_location):
     compare_list_index = 0  # Initialize the index variable
     accepted_images = []
     rejected_images = []
+    easy_2_read_accepts=[]
+    easy_2_read_rejects=[]
     new_home = []
     class App(ctk.CTk):
         def __init__(self):
@@ -399,9 +401,11 @@ def create_image_display(compare_list,Low_ass_location):
             return accepted_images, rejected_images
                 
         def display_results(self,simple_accepted_images,simple_rejected_images,whole_list,simple_whole_list):
-             # Clear previous content
+            easy_2_read_accepts.clear()
+            easy_2_read_rejects.clear()
+            # Clear previous content
             self.clear_display()
-            
+            #Structure is preserved DO NOT FORGET
             # Create labels for listbox titles
             self.rowconfigure(0, weight=1)
             self.rowconfigure(1, weight= 6)
@@ -444,6 +448,7 @@ def create_image_display(compare_list,Low_ass_location):
                             combined=temp_list_A[0].split(' ')[0]+ "( " +temp_list_A[0].split(' ')[1]+" )"
                         else:
                             combined=temp_list_A[0].split(' ')[0]+ "( NOT " +temp_list_R[0].split(' ')[1]+" Connector )"
+                        easy_2_read_accepts.append(combined)
                         accepted_listbox.insert(tk.END, combined)
                         print(combined)
                     if (temp_list_R[0].split(' ')[1] == temp_list_R[1].split(' ')[1]):
@@ -452,12 +457,15 @@ def create_image_display(compare_list,Low_ass_location):
                         else:
                             combined=temp_list_R[0].split(' ')[0]+ "( NOT " +temp_list_A[0].split(' ')[1]+" Connector )"
                         rejected_listbox.insert(tk.END, combined)
+                        easy_2_read_rejects.append(combined)
                         print(combined)
                 else: #the number is present in one list
                     if result == 1:
                         accepted_listbox.insert(tk.END, item)
+                        easy_2_read_accepts.append(item)
                         print(item)
                     elif result == 2:
+                        easy_2_read_rejects.append(item)
                         rejected_listbox.insert(tk.END, item)
                         print(item)
             self.approve_button=Output_Approve(self,self.mover)

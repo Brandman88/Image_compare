@@ -65,13 +65,13 @@ for unique_id in unique_cables:
         cables.append(cable)
     else:
         if len(temp_list)==2:
-            cable = Cable(High_ass, Low_ass, unique_id, temp_list_2)
+            cable = Cable(High_ass, Low_ass, unique_id, temp_list)
             cables.append(cable)
 print('yes')
 compare_list=[]
 for cable in cables:
     compare_list.append(cable.loc1)
-    if cable.loc1 != False:
+    if cable.loc2 != False:
         compare_list.append(cable.loc2)
 
 
