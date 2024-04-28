@@ -77,9 +77,10 @@ for cable in cables:
 
 
 print (compare_list)
-print(LFI.create_image_comparator(compare_list,Low_ass_location))
+accepted_images, rejected_images=LFI.create_image_display(compare_list,Low_ass_location)
 #print(LFI.create_borderless_window(compare_list,Low_ass_location))
-
+print(f"Accepted: {accepted_images}\n")
+print(f"Rejected: {rejected_images}")
             
             
             
@@ -88,7 +89,7 @@ print(LFI.create_image_comparator(compare_list,Low_ass_location))
                 
                 
                     
-                        
+
 
 
 
