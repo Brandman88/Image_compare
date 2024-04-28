@@ -33,7 +33,7 @@ def run_setup_gui():
         def __init__(self):
             super().__init__()
             self.title("Setup Process")
-            self.geometry("300x200")
+            self.geometry("600x400")
             self.background_color = "#{:06x}".format(random.randint(0, 0xFFFFFF))
             self.configure(background=self.background_color) 
             self.dir_label = tk.Label(self, text="Select Default Directory:")
@@ -121,9 +121,14 @@ def select_directories(default_dir):
             super().__init__()
             self.background_color = "#{:06x}".format(random.randint(0, 0xFFFFFF))
             self.configure(background=self.background_color)
+            self.geometry("600x400")
+            self.tree_style = ttk.Style()
+            self.tree_style.configure("Custom.Treeview.Heading", font=('Helvetica', 16, 'bold'))
+            self.tree_style.configure("Custom.Treeview", font=('Helvetica', 10), background="white", foreground="black", fieldbackground="white")
+            self.tree = ttk.Treeview(self,style="Custom.Treeview", yscrollcommand=True)
             self.title("Directory Selection")
             self.selected_directories = []
-            self.tree = ttk.Treeview(self)
+            #self.tree = ttk.Treeview(self,yscrollcommand=True)
             self.tree.heading("#0", text="Select a Directory")
             self.tree.pack(expand=True, fill=tk.BOTH)
             self.confirm_button = tk.Button(self, text="Confirm Selection", command=self.confirm_selection, bg="green")
@@ -137,7 +142,7 @@ def select_directories(default_dir):
             for d in directories:
                 self.tree.insert("", "end", text=d, open=True)
         def confirm_selection(self):
-            selection = self.tree.selection()
+            selection = self.tree.selection() 
             if selection:
                 selected_directory = self.tree.item(selection)["text"]
                 print("Selected directory:", selected_directory)
@@ -180,10 +185,12 @@ class Output_reject(ctk.CTkButton):
             master=parent,
             command=lambda: close_func("reject"), 
             text='Reject',
-            text_color=lighter_red,
-            fg_color = 'transparent',
-            width = 40, height =40,
-            corner_radius=0,
+            text_color='#000000',
+            fg_color = lighter_red,
+            width = 100, height =60,
+            font=('Helvetica', 14 , 'bold'),
+            corner_radius=5,
+            border_width=3,     
             hover_color= darker_red)
         self.grid(row=1, column=0, padx=5, pady=5)
     
@@ -193,10 +200,12 @@ class Output_accept(ctk.CTkButton):
             master=parent,
             command=lambda: close_func("accept"),
             text='Accept',
-            text_color=lighter_green,
-            fg_color = 'transparent',
-            width = 40, height =40,
-            corner_radius=0,
+            text_color='#000000',
+            fg_color = lighter_green,
+            width = 100, height =60,
+            font=('Helvetica', 14, 'bold'),
+            corner_radius=5,
+            border_width=3,        
             hover_color= darker_green)
         self.grid(row=1, column=1, padx=5, pady=5)
         
@@ -209,12 +218,14 @@ class Output_Disapprove(ctk.CTkButton):
             master=parent,
             command=lambda: close_func("Disapprove"), 
             text='Disapprove',
-            text_color=lighter_red,
-            fg_color = 'transparent',
-            width = 40, height =40,
-            corner_radius=0,
+            text_color='#000000',
+            fg_color = lighter_red,
+            width = 100, height =60,
+            font=('Helvetica', 14 , 'bold'),
+            corner_radius=5,
+            border_width=3,     
             hover_color= darker_red)
-        self.grid(row=2, column=0, padx=5, pady=5)
+        self.grid(row=1, column=0, padx=5, pady=5)
 
 
 class Output_Approve(ctk.CTkButton):
@@ -223,17 +234,19 @@ class Output_Approve(ctk.CTkButton):
             master=parent,
             command=lambda: close_func("Approve"),
             text='Approve',
-            text_color=lighter_green,
-            fg_color = 'transparent',
-            width = 40, height =40,
-            corner_radius=0,
+            text_color='#000000',
+            fg_color = lighter_green,
+            width = 100, height =60,
+            font=('Helvetica', 14, 'bold'),
+            corner_radius=5,
+            border_width=3,        
             hover_color= darker_green)
-        self.grid(row=2, column=1, padx=5, pady=5)
+        self.grid(row=1, column=1, padx=5, pady=5)
         
 def check_number_is_in_both_lists(number, list1, list2):
     # Check if the number appears in either list
-    found_in_list1 = any(number in string for string in list1)
-    found_in_list2 = any(number in string for string in list2)
+    found_in_list1 = any(number == string.split(' ')[0] for string in list1)
+    found_in_list2 = any(number == string.split(' ')[0] for string in list2)
     if found_in_list1 and found_in_list2:
         return "Both"
     else:
@@ -244,12 +257,12 @@ def check_number_is_in_both_lists(number, list1, list2):
 def check_number_in_either_list(number, list1, list2):
     # Check if the number appears in a string within either list
     for string in list1:
-        if number in string:
+        if number == string.split(' ')[0]:
             print(number)
             print(1)
             return 1
     for string in list2:
-        if number in string:
+        if number == string.split(' ')[0]:
             print(number)
             print(2)
             return 2
@@ -407,23 +420,22 @@ def create_image_display(compare_list,Low_ass_location):
             self.clear_display()
             #Structure is preserved DO NOT FORGET
             # Create labels for listbox titles
-            self.rowconfigure(0, weight=1)
-            self.rowconfigure(1, weight= 6)
-            self.rowconfigure(2, weight= 1)
-            accepted_label = tk.Label(self, text="Accepted Images", fg="white", bg="black")
-            rejected_label = tk.Label(self, text="Rejected Images", fg="white", bg="black")
+            self.rowconfigure(0, weight=6)
+            self.rowconfigure(1, weight= 1)
+            #accepted_label = tk.Label(self, text="Accepted Images", fg="white", bg="black")
+            #rejected_label = tk.Label(self, text="Rejected Images", fg="white", bg="black")
 
             # Position the labels
-            accepted_label.grid(row=0, column=0, padx=(10, 5), pady=(10, 5))
-            rejected_label.grid(row=0, column=1, padx=(5, 10), pady=(10, 5))
+            #accepted_label.grid(row=0, column=0, padx=(10, 5), pady=(10, 5))
+            #rejected_label.grid(row=0, column=1, padx=(5, 10), pady=(10, 5))
 
             # Create the listboxes
-            accepted_listbox = tk.Listbox(self, name="accepted_listbox", fg="black")
-            rejected_listbox = tk.Listbox(self, name="rejected_listbox", fg="black")
+            #accepted_listbox = tk.Listbox(self, name="accepted_listbox", fg="black")
+            #rejected_listbox = tk.Listbox(self, name="rejected_listbox", fg="black")
 
             # Position the listboxes
-            accepted_listbox.grid(row=1, column=0, padx=(10, 5), pady=(0, 5))
-            rejected_listbox.grid(row=1, column=1, padx=(5, 10), pady=(0, 5))
+           # accepted_listbox.grid(row=1, column=0, padx=(10, 5), pady=(0, 5))
+            #rejected_listbox.grid(row=1, column=1, padx=(5, 10), pady=(0, 5))
 
                 # Display accepted images in the left listbox
             unique_ID = set()
@@ -449,29 +461,80 @@ def create_image_display(compare_list,Low_ass_location):
                         else:
                             combined=temp_list_A[0].split(' ')[0]+ "( NOT " +temp_list_R[0].split(' ')[1]+" Connector )"
                         easy_2_read_accepts.append(combined)
-                        accepted_listbox.insert(tk.END, combined)
+                        #accepted_listbox.insert(tk.END, combined)
                         print(combined)
                     if (temp_list_R[0].split(' ')[1] == temp_list_R[1].split(' ')[1]):
                         if (temp_list_R[0].split(' ')[1].lower() != "view"):
                             combined=temp_list_R[0].split(' ')[0]+ "( " +temp_list_R[0].split(' ')[1]+" )"
                         else:
                             combined=temp_list_R[0].split(' ')[0]+ "( NOT " +temp_list_A[0].split(' ')[1]+" Connector )"
-                        rejected_listbox.insert(tk.END, combined)
+                        #rejected_listbox.insert(tk.END, combined)
                         easy_2_read_rejects.append(combined)
                         print(combined)
                 else: #the number is present in one list
                     if result == 1:
-                        accepted_listbox.insert(tk.END, item)
+                        #accepted_listbox.insert(tk.END, item)
                         easy_2_read_accepts.append(item)
                         print(item)
                     elif result == 2:
                         easy_2_read_rejects.append(item)
-                        rejected_listbox.insert(tk.END, item)
+                        #rejected_listbox.insert(tk.END, item)
                         print(item)
+            # Configure TreeView styles
+            self.tree_style = ttk.Style()
+            self.title("FINAL REVIEW")
+            self.tree_style.configure("Custom.Treeview.Heading", font=('Helvetica', 16, 'bold'))
+            self.tree_style.configure("Custom.Treeview", font=('Helvetica', 12), background="white", foreground="black", fieldbackground="white")
+
+            # Create TreeViews
+            self.tree_accepted = ttk.Treeview(self, style="Custom.Treeview", yscrollcommand=True)
+            self.tree_accepted.heading("#0", text="Accepted")
+            self.tree_accepted.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+
+            self.tree_rejected = ttk.Treeview(self, style="Custom.Treeview", yscrollcommand=True)
+            self.tree_rejected.heading("#0", text="Rejected")
+            self.tree_rejected.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
+            # Clear existing items
+            self.tree_accepted.delete(*self.tree_accepted.get_children())
+            self.tree_rejected.delete(*self.tree_rejected.get_children())
+
+            # Populate the accepted TreeView
+            for item in easy_2_read_accepts:
+                self.tree_accepted.insert("", "end", text=item)
+
+            # Populate the rejected TreeView
+            for item in easy_2_read_rejects:
+                self.tree_rejected.insert("", "end", text=item)
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
             self.approve_button=Output_Approve(self,self.mover)
             self.disapprove_button=Output_Disapprove(self,self.mover)
-            self.approve_button.grid(row=2, column=0, padx=5, pady=5)
-            self.disapprove_button.grid(row=2, column=1, padx=5, pady=5)
+            self.approve_button.grid(row=1, column=0, padx=5, pady=5)
+            self.disapprove_button.grid(row=1, column=1, padx=5, pady=5)
                 
                         
         def mover(self, button):

@@ -82,15 +82,3 @@ accepted_images, rejected_images=LFI.create_image_display(compare_list,Low_ass_l
 print(f"Accepted: {accepted_images}\n")
 print(f"Rejected: {rejected_images}")
             
-            
-            
-            
-
-                
-                
-                    
-
-
-
-
-#LFI.create_borderless_window()
